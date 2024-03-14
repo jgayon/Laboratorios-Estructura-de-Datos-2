@@ -1,4 +1,4 @@
-import graphviz
+#import graphviz
 import os
 from typing import Any, Optional, Tuple
 
@@ -40,50 +40,47 @@ class ArbolAVL:
     def __init__(self, root: NodoArbol = None):
         self.root = root
 
-    @classmethod
-    def obtener_altura(cls, nodo: NodoArbol) -> int:
+    def obtener_altura(self, nodo: NodoArbol) -> int:
         if nodo is None:
             return 0
-        altura_izquierda = cls.obtener_altura(nodo.left)
-        altura_derecha = cls.obtener_altura(nodo.right)
+        altura_izquierda = self.obtener_altura(nodo.left)
+        altura_derecha = self.obtener_altura(nodo.right)
         return max(altura_izquierda, altura_derecha) + 1
 
-    @classmethod
-    def simple_izquierda(cls, nodo: NodoArbol):
+    def simple_izquierda(self,nodo: NodoArbol):
         aux = nodo.right
         nodo.right = aux.left
         aux.left = nodo
         return aux
 
-    @classmethod
-    def simple_derecha(cls, nodo: NodoArbol):
+    def simple_derecha(self,nodo: NodoArbol):
         aux = nodo.left
         nodo.left = aux.right
         aux.right = nodo
         return aux
 
-    @classmethod
-    def balancear(cls, nodo: NodoArbol) -> NodoArbol:
-        bal = cls.obtener_altura(nodo.right) - cls.obtener_altura(nodo.left)
+    def balancear(self, nodo: NodoArbol) -> NodoArbol:
+        bal = self.obtener_altura(nodo.right) - self.obtener_altura(nodo.left)
         if bal == 2:
-            if cls.obtener_altura(nodo.right.left) == -1:
-                nodo.right = cls.simple_derecha(nodo.right)
-                return cls.simple_izquierda(nodo)
+            if self.obtener_altura(nodo.right.left) == -1:
+                nodo.right = self.simple_derecha(nodo.right)
+                return self.simple_izquierda(nodo)
             else:
-                return cls.simple_izquierda(nodo)
+                return self.simple_izquierda(nodo)
 
         elif bal == -2:
-            if cls.obtener_altura(nodo.left.right) == 1:
-                nodo.left = cls.simple_izquierda(nodo.left)
-                return cls.simple_derecha(nodo)
+            if self.obtener_altura(nodo.left.right) == 1:
+                nodo.left = self.simple_izquierda(nodo.left)
+                return self.simple_derecha(nodo)
             else:
-                return cls.simple_derecha(nodo)
-
+                return self.simple_derecha(nodo)
         return nodo
-
+    
     def insertar(self, tipo, numero):
         nuevo_nodo = NodoArbol(tipo, numero)
         self.root = self._insertar_recursivo(self.root, nuevo_nodo)
+        print(f"se ha insertado el nodo: {nuevo_nodo.nombre_archivo}")
+
 
     def _insertar_recursivo(self, nodo_actual, nuevo_nodo):
         if nodo_actual is None:
@@ -101,6 +98,9 @@ class ArbolAVL:
         return self.balancear(nodo_actual)
 
 
+    def eliminar(self, tipo, numero):
+        self.root = self._eliminar_recursivo(self.root, tipo, numero)
+
     def _eliminar_recursivo(self, nodo_actual, tipo, numero):
         if nodo_actual is None:
             return nodo_actual
@@ -111,6 +111,7 @@ class ArbolAVL:
         elif numero > nodo_actual.numero:
             nodo_actual.right = self._eliminar_recursivo(nodo_actual.right, tipo, numero)
         else:
+            print(f"se ha eliminado el nodo: {nodo_actual.nombre_archivo}")
             # Nodo encontrado, proceder a eliminar
             if nodo_actual.left is None:
                 temp = nodo_actual.right
@@ -137,26 +138,17 @@ class ArbolAVL:
         while current.left is not None:
             current = current.left
         return current
+    
+    def obtener_nivel(self, nodo: NodoArbol, nivel_actual: int = 0) -> int:
+        if nodo is None:
+            return nivel_actual - 1  # Restamos 1 porque el nodo es nulo
 
-  ##  def visualizar_con_acciones(self):
-        dot = graphviz.Digraph()
+        nivel_izquierdo = self.obtener_nivel(nodo.left, nivel_actual + 1)
+        nivel_derecho = self.obtener_nivel(nodo.right, nivel_actual + 1)
 
-        self._construir_grafo_con_acciones(dot, self.root)
+        return max(nivel_izquierdo, nivel_derecho)
 
-        dot.render('arbol_avl', format='png', cleanup=True)
-        dot.view()
-
-  ##  def _construir_grafo_con_acciones(self, dot, nodo):
-        if nodo is not None:
-            ruta_imagen = os.path.join("data", nodo.tipo, nodo.nombre_archivo)
-            dot.node(str(nodo.nombre_archivo), label=str(nodo.nombre_archivo), URL=ruta_imagen)
-            if nodo.left is not None:
-                dot.edge(str(nodo.nombre_archivo), str(nodo.left.nombre_archivo))
-                self._construir_grafo_con_acciones(dot, nodo.left)
-            if nodo.right is not None:
-                dot.edge(str(nodo.nombre_archivo), str(nodo.right.nombre_archivo))
-                self._construir_grafo_con_acciones(dot, nodo.right)
-
+    
     def buscar_nodo(self, tipo: str, numero: int) -> None:
         nodo, padre = self.search((tipo, numero))
         if nodo is None:
@@ -173,30 +165,32 @@ class ArbolAVL:
             opcion = input("Seleccione una opción: ")
 
             if opcion == "a":
-                nivel = self.obtener_nivel(nodo)
+                nivel = self.obtener_altura(nodo)-1
                 print(f"El nivel del nodo es: {nivel}")
             elif opcion == "b":
-                balanceo = self.obtener_altura(nodo.right)-self.obtener_altura(nodo.left)
+                balanceo = self.obtener_altura(nodo.right) - self.obtener_altura(nodo.left)
                 print(f"El factor de balanceo del nodo es: {balanceo}")
             elif opcion == "c":
                 if padre is None:
                     print("El nodo no tiene padre.")
                 else:
-                    print(f"El padre del nodo es: {padre.data}")
+                    print(f"El padre del nodo es: {padre.nombre_archivo}")
             elif opcion == "d":
-                abuelo = self.obtener_abuelo(nodo)
+                padre_aux,abuelo = self.search(padre.tipo,padre.numero)
                 if abuelo is None:
                     print("El nodo no tiene abuelo.")
                 else:
-                    print(f"El abuelo del nodo es: {abuelo.data}")
+                    print(f"El abuelo del nodo es: {abuelo}")
             elif opcion == "e":
-                tio = self.obtener_tio(nodo)
+                padre_aux,abuelo = self.search(padre.tipo,padre.numero)
+                tio = abuelo.left if not padre_aux  else abuelo.right if not padre_aux else None
                 if tio is None:
                     print("El nodo no tiene tío.")
                 else:
-                    print(f"El tío del nodo es: {tio.data}")
+                    print(f"El tío del nodo es: {tio.self.nombre_archivo}")
             else:
                 print("Opción no válida.")
+
 
     def search(self, elem: Tuple[str, int]) -> Tuple[Optional["NodoArbol"], Optional["NodoArbol"]]:
         p, pad = self.root, None
@@ -210,7 +204,6 @@ class ArbolAVL:
                 pad = p
                 p = p.right
         return p, pad
-
 
     def menu(self):
         while True:
@@ -229,16 +222,16 @@ class ArbolAVL:
                 tipo = input("Ingrese el tipo del nodo: ")
                 numero = input("Ingrese el número del nodo: ")
                 self.insertar(tipo, numero)
-             #   self.visualizar_con_acciones()
+             #   self.visualizar
             elif opcion == "2":
                 tipo = input("Ingrese el tipo del nodo a eliminar: ")
                 numero = input("Ingrese el número del nodo a eliminar: ")
                 self.eliminar(tipo, numero)
-              #  self.visualizar_con_acciones()
+              #  self.visualizar
             elif opcion == "3":
                 tipo = input("Ingrese el tipo del nodo a buscar: ")
                 numero = input("Ingrese el número del nodo a buscar: ")
-                # Lógica para buscar el nodo
+                self.buscar_nodo(tipo, numero)
             elif opcion == "4":
                 tipo = input("Ingrese el tipo para filtrar los nodos: ")
                 min_size = int(input("Ingrese el tamaño mínimo del archivo: "))
@@ -250,40 +243,6 @@ class ArbolAVL:
                 self.visualizar()
             elif opcion == "7":
                 print("¡Adiós!")
-                break
-            else:
-                print("Opción no válida. Inténtelo de nuevo.")
-
-
-    def submenu_buscar_nodo(self, nodo_encontrado):
-        while True:
-            print("\nSubmenú del nodo encontrado:")
-            print("a. Obtener nivel del nodo")
-            print("b. Obtener factor de balanceo del nodo")
-            print("c. Encontrar el padre del nodo")
-            print("d. Encontrar el abuelo del nodo")
-            print("e. Encontrar el tío del nodo")
-            print("f. Volver al menú principal")
-
-            opcion = input("Seleccione una opción: ")
-
-            if opcion == "a":
-                nivel = self.obtener_nivel(self.root, nodo_encontrado, 1)
-                print(f"Nivel del nodo: {nivel}")
-            elif opcion == "b":
-                factor_balanceo = self.obtener_factor_balanceo(nodo_encontrado)
-                print(f"Factor de balanceo del nodo: {factor_balanceo}")
-            elif opcion == "c":
-                padre = self.encontrar_padre(self.root, nodo_encontrado)
-                print(f"Padre del nodo: {padre.nombre_archivo if padre else 'No tiene padre'}")
-            elif opcion == "d":
-                abuelo = self.encontrar_abuelo(self.root, nodo_encontrado)
-                print(f"Abuelo del nodo: {abuelo.nombre_archivo if abuelo else 'No tiene abuelo'}")
-            elif opcion == "e":
-                tio = self.encontrar_tio(self.root, nodo_encontrado)
-                print(f"Tío del nodo: {tio.nombre_archivo if tio else 'No tiene tío'}")
-            elif opcion == "f":
-                print("Volviendo al menú principal...")
                 break
             else:
                 print("Opción no válida. Inténtelo de nuevo.")
