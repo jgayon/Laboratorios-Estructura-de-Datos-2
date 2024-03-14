@@ -1,6 +1,7 @@
 #import graphviz
 import os
-from typing import Any, Optional, Tuple
+from collections import deque
+from typing import Any, List, Optional, Tuple
 
 class NodoArbol:
     def __init__(self, tipo, numero):
@@ -48,17 +49,24 @@ class ArbolAVL:
         return max(altura_izquierda, altura_derecha) + 1
 
     def simple_izquierda(self,nodo: NodoArbol):
+        
         aux = nodo.right
         nodo.right = aux.left
         aux.left = nodo
+        if(nodo == self.root):
+            self.root= aux
+            return aux
         return aux
 
     def simple_derecha(self,nodo: NodoArbol):
         aux = nodo.left
         nodo.left = aux.right
         aux.right = nodo
+        if(nodo == self.root):
+            self.root= aux
+            return aux
         return aux
-
+    
     def balancear(self, nodo: NodoArbol) -> NodoArbol:
         bal = self.obtener_altura(nodo.right) - self.obtener_altura(nodo.left)
         if bal == 2:
@@ -76,85 +84,125 @@ class ArbolAVL:
                 return self.simple_derecha(nodo)
         return nodo
     
-    def insertar(self, tipo, numero):
-        nuevo_nodo = NodoArbol(tipo, numero)
-        self.root = self._insertar_recursivo(self.root, nuevo_nodo)
-        print(f"se ha insertado el nodo: {nuevo_nodo.nombre_archivo}")
-
-
-    def _insertar_recursivo(self, nodo_actual, nuevo_nodo):
-        if nodo_actual is None:
-            return nuevo_nodo
-
-        if nuevo_nodo.nombre_archivo < nodo_actual.nombre_archivo:
-            nodo_actual.left = self._insertar_recursivo(nodo_actual.left, nuevo_nodo)
-        elif nuevo_nodo.nombre_archivo > nodo_actual.nombre_archivo:
-            nodo_actual.right = self._insertar_recursivo(nodo_actual.right, nuevo_nodo)
-        else:
-            # Ignorar nodos duplicados
-            return nodo_actual
-
-        # Balancear el árbol después de la inserción
-        return self.balancear(nodo_actual)
-
-
-    def eliminar(self, tipo, numero):
-        self.root = self._eliminar_recursivo(self.root, tipo, numero)
-
-    def _eliminar_recursivo(self, nodo_actual, tipo, numero):
-        if nodo_actual is None:
-            return nodo_actual
-
-        # Recorrer el árbol hasta encontrar el nodo a eliminar
-        if numero < nodo_actual.numero:
-            nodo_actual.left = self._eliminar_recursivo(nodo_actual.left, tipo, numero)
-        elif numero > nodo_actual.numero:
-            nodo_actual.right = self._eliminar_recursivo(nodo_actual.right, tipo, numero)
-        else:
-            print(f"se ha eliminado el nodo: {nodo_actual.nombre_archivo}")
-            # Nodo encontrado, proceder a eliminar
-            if nodo_actual.left is None:
-                temp = nodo_actual.right
-                nodo_actual = None
-                return temp
-            elif nodo_actual.right is None:
-                temp = nodo_actual.left
-                nodo_actual = None
-                return temp
-
-            # Nodo con dos hijos: obtener el sucesor inorden (el nodo más pequeño en el subárbol derecho)
-            temp = self._min_value_node(nodo_actual.right)
-            # Copiar el contenido del sucesor inorden al nodo actual
-            nodo_actual.numero = temp.numero
-            nodo_actual.tipo = temp.tipo
-            # Eliminar el sucesor inorden
-            nodo_actual.right = self._eliminar_recursivo(nodo_actual.right, temp.tipo, temp.numero)
-
-        # Balancear el árbol después de la eliminación
-        return self.balancear(nodo_actual)
+    def search(self, nombre_archivo: str) -> Tuple[Optional[NodoArbol], Optional[NodoArbol]]:
+        p, pad = self.root, None
+        while p is not None:
+            if nombre_archivo == p.nombre_archivo:
+                return p, pad
+            elif nombre_archivo < p.nombre_archivo:
+                pad = p
+                p = p.left
+            else:
+                pad = p
+                p = p.right
+        return p, pad
     
-    def _min_value_node(self, nodo):
-        current = nodo
-        while current.left is not None:
-            current = current.left
-        return current
+    def insert(self, tipo: str, numero: int) -> bool:
+        to_insert = NodoArbol(tipo, numero)
+        if self.root is None:
+            self.root = to_insert
+            print(f"Se insertó el nodo {to_insert.nombre_archivo}.")            
+            return True
+        else:
+            p, pad = self.search(to_insert.nombre_archivo)
+            if p is None:
+                if to_insert.nombre_archivo < pad.nombre_archivo:
+                    pad.left = to_insert
+                else:
+                    pad.right = to_insert
+                print(f"Se insertó el nodo {to_insert.nombre_archivo}.")
+                self.balancear(self.root)  # Balancear después de la inserción
+                return True
+            return False
+
+    #Delete puede tener error
+    def delete(self, tipo: str, numero: int, mode: bool = True) -> bool:
+        nombre_archivo = NodoArbol(tipo, numero).nombre_archivo
+        p, pad = self.search(nombre_archivo)
+        if p is not None:
+            if p.left is None and p.right is None:
+                if p == pad.left:
+                    pad.left = None
+                else:
+                    pad.right = None
+                del p
+                print(f"Se eliminó el nodo {nombre_archivo}.")
+            elif p.left is not None and p.right is None:
+                if p == pad.left:
+                    pad.left = p.left
+                else:
+                    pad.right = p.left
+                del p
+                print(f"Se eliminó el nodo {nombre_archivo}.")
+            elif p.left is None and p.right is not None:
+                if p == pad.left:
+                    pad.left = p.right
+                else:
+                    pad.right = p.right
+                del p
+                print(f"Se eliminó el nodo {nombre_archivo}.")
+            else:
+                if mode:
+                    pred, pad_pred = self.__pred(p)
+                    p.nombre_archivo = pred.nombre_archivo
+                    if pred.left is not None:
+                        if pad_pred == p:
+                            pad_pred.left = pred.left
+                        else:
+                            pad_pred.right = pred.left
+                    else:
+                        if pad_pred == p:
+                            pad_pred.left = None
+                        else:
+                            pad_pred.right = None
+                    del pred
+                else:
+                    sus, pad_sus = self.__sus(p)
+                    p.nombre_archivo = sus.nombre_archivo
+                    if sus.right is not None:
+                        if pad_sus == p:
+                            pad_sus.right = sus.right
+                        else:
+                            pad_sus.left = sus.right
+                    else:
+                        if pad_sus == p:
+                            pad_sus.right = None
+                        else:
+                            pad_sus.left = None
+                    del sus
+            print(f"Se eliminó el nodo {nombre_archivo}.")    
+            self.balancear(self.root)  # Balancear después de la eliminación
+            return True
+        print(f"No se encontró el nodo {nombre_archivo} para eliminar.")
+        return False
+
+    def __pred(self, nodoArbol: NodoArbol) -> Tuple[NodoArbol, NodoArbol]:
+        p, pad = nodoArbol.left, nodoArbol
+        while p.right is not None:
+            p, pad = p.right, p
+        return p, pad
     
-    def obtener_nivel(self, nodo: NodoArbol, nivel_actual: int = 0) -> int:
+    def obtener_nivel(self, nodo: NodoArbol, target: NodoArbol, nivel_actual: int = 0) -> int:
         if nodo is None:
-            return nivel_actual - 1  # Restamos 1 porque el nodo es nulo
+            return -1
+        
+        if nodo == target:
+            return nivel_actual
+        
+        nivel_izquierdo = self.obtener_nivel(nodo.left, target, nivel_actual + 1)
+        if nivel_izquierdo != -1:
+            return nivel_izquierdo
+        
+        nivel_derecho = self.obtener_nivel(nodo.right, target, nivel_actual + 1)
+        return nivel_derecho
 
-        nivel_izquierdo = self.obtener_nivel(nodo.left, nivel_actual + 1)
-        nivel_derecho = self.obtener_nivel(nodo.right, nivel_actual + 1)
-
-        return max(nivel_izquierdo, nivel_derecho)
-
-    
     def buscar_nodo(self, tipo: str, numero: int) -> None:
-        nodo, padre = self.search((tipo, numero))
+        nodo, padre = self.search(NodoArbol(tipo, numero).nombre_archivo)
         if nodo is None:
             print("El nodo no fue encontrado.")
         else:
-            print("El nodo fue encontrado.")
+            aux = nodo.nombre_archivo
+            print("El nodo {aux} fue encontrado.")
             print("Opciones:")
             print("a. Obtener el nivel del nodo.")
             print("b. Obtener el factor de balanceo (equilibrio) del nodo.")
@@ -165,45 +213,86 @@ class ArbolAVL:
             opcion = input("Seleccione una opción: ")
 
             if opcion == "a":
-                nivel = self.obtener_altura(nodo)-1
-                print(f"El nivel del nodo es: {nivel}")
+                nivel = self.obtener_nivel(self.root, nodo)
+                print(f"El nivel del nodo {aux} es: {nivel}")
             elif opcion == "b":
                 balanceo = self.obtener_altura(nodo.right) - self.obtener_altura(nodo.left)
-                print(f"El factor de balanceo del nodo es: {balanceo}")
+                print(f"El factor de balanceo del nodo {aux} es: {balanceo}")
             elif opcion == "c":
                 if padre is None:
                     print("El nodo no tiene padre.")
                 else:
-                    print(f"El padre del nodo es: {padre.nombre_archivo}")
+                    print(f"El padre del nodo {aux} es: {padre.nombre_archivo}")
             elif opcion == "d":
-                padre_aux,abuelo = self.search(padre.tipo,padre.numero)
-                if abuelo is None:
-                    print("El nodo no tiene abuelo.")
-                else:
-                    print(f"El abuelo del nodo es: {abuelo}")
+                if padre is not None:
+                    abuelo, _ = self.search(padre.nombre_archivo)
+                    if abuelo is not None:
+                        print(f"El abuelo del nodo {aux} es: {abuelo.nombre_archivo}")
+                    else:
+                        print("El nodo no tiene abuelo.")
             elif opcion == "e":
-                padre_aux,abuelo = self.search(padre.tipo,padre.numero)
-                tio = abuelo.left if not padre_aux  else abuelo.right if not padre_aux else None
-                if tio is None:
-                    print("El nodo no tiene tío.")
+                if padre is not None:
+                    _, abuelo = self.search(padre.nombre_archivo)
+                    if abuelo is not None:
+                        tio = abuelo.left if padre == abuelo.right else abuelo.right if padre == abuelo.left else None
+                        if tio is not None:
+                            print(f"El tío del nodo {aux} es: {tio.nombre_archivo}")
+                        else:
+                            print("El nodo no tiene tío.")
+                    else:
+                        print("El nodo no tiene abuelo.")
                 else:
-                    print(f"El tío del nodo es: {tio.self.nombre_archivo}")
+                    print("El nodo no tiene padre.")
             else:
                 print("Opción no válida.")
 
+    def buscar_nodos_por_criterios(self, tipo: str, min_size: int, max_size: int) -> List[NodoArbol]:
+        resultados = []
+        self.buscar_nodos_por_criterios_recursivo(self.root, tipo, min_size, max_size, resultados)
+        return resultados
 
-    def search(self, elem: Tuple[str, int]) -> Tuple[Optional["NodoArbol"], Optional["NodoArbol"]]:
-        p, pad = self.root, None
-        while p is not None:
-            if elem == (p.tipo, p.numero):
-                return p, pad
-            elif elem < (p.tipo, p.numero):
-                pad = p
-                p = p.left
-            else:
-                pad = p
-                p = p.right
-        return p, pad
+    def buscar_nodos_por_criterios_recursivo(self, nodo: NodoArbol, tipo: str, min_size: int, max_size: int, resultados: List[NodoArbol]) -> None:
+        if nodo is None:
+            return
+        # Verificar si el nodo cumple con los criterios
+        if nodo.tipo == tipo and min_size <= nodo.size < max_size:
+            resultados.append(nodo)
+        # Explorar el subárbol izquierdo si es posible
+        if nodo.left is not None:
+            self.buscar_nodos_por_criterios_recursivo(nodo.left, tipo, min_size, max_size, resultados)
+
+        # Explorar el subárbol derecho si es posible
+        if nodo.right is not None:
+            self.buscar_nodos_por_criterios_recursivo(nodo.right, tipo, min_size, max_size, resultados)
+
+    def recorrido_niveles(self) -> None:
+        if self.root is None:
+            print("El árbol está vacío.")
+            return
+        # Create an empty queue for level-order traversal
+        queue = deque()
+        # Enqueue the root node
+        queue.append(self.root)
+
+        print("Recorrido por niveles del árbol:")
+        while queue:
+            # Get the number of nodes at the current level
+            level_size = len(queue)
+            # Print nodes at the current level
+            for _ in range(level_size):
+                current_node = queue.popleft()
+            # Print the name of the file for the current node
+                print(current_node.nombre_archivo)
+                # Enqueue the left child if it exists
+                if current_node.left:
+                    queue.append(current_node.left)
+                 # Enqueue the right child if it exists
+                if current_node.right:
+                    queue.append(current_node.right)
+
+        # Print a separator to indicate the end of the current level
+        print("--- Fin del nivel ---")
+
 
     def menu(self):
         while True:
@@ -220,23 +309,51 @@ class ArbolAVL:
 
             if opcion == "1":
                 tipo = input("Ingrese el tipo del nodo: ")
+                while tipo not in ['bike','cars','cats','dogs','flowers','horses','human']:
+                    print("Tipo no válido. Los tipos permitidos son: 'bike', 'cars', 'cats', 'dogs', 'flowers', 'horses', 'human'.")
+                    tipo = input("Ingrese el tipo para filtrar los nodos: ")
                 numero = input("Ingrese el número del nodo: ")
-                self.insertar(tipo, numero)
+                self.insert(tipo, numero)
              #   self.visualizar
             elif opcion == "2":
                 tipo = input("Ingrese el tipo del nodo a eliminar: ")
+                while tipo not in ['bike','cars','cats','dogs','flowers','horses','human']:
+                    print("Tipo no válido. Los tipos permitidos son: 'bike', 'cars', 'cats', 'dogs', 'flowers', 'horses', 'human'.")
+                    tipo = input("Ingrese el tipo para filtrar los nodos: ")
                 numero = input("Ingrese el número del nodo a eliminar: ")
-                self.eliminar(tipo, numero)
+                self.delete(tipo, numero)
               #  self.visualizar
             elif opcion == "3":
-                tipo = input("Ingrese el tipo del nodo a buscar: ")
-                numero = input("Ingrese el número del nodo a buscar: ")
-                self.buscar_nodo(tipo, numero)
+                tipo = input("Ingrese el tipo del nodo: ")
+                while tipo not in ['bike','cars','cats','dogs','flowers','horses','human']:
+                    print("Tipo no válido. Los tipos permitidos son: 'bike', 'cars', 'cats', 'dogs', 'flowers', 'horses', 'human'.")
+                    tipo = input("Ingrese el tipo para filtrar los nodos: ")
+                numero = input("Ingrese el número del nodo: ")
+                self.buscar_nodo(tipo,numero)
             elif opcion == "4":
-                tipo = input("Ingrese el tipo para filtrar los nodos: ")
+                tipo = input("Ingrese el tipo del nodo: ")
+                while tipo not in ['bike','cars','cats','dogs','flowers','horses','human']:
+                    print("Tipo no válido. Los tipos permitidos son: 'bike', 'cars', 'cats', 'dogs', 'flowers', 'horses', 'human'.")
+                    tipo = input("Ingrese el tipo para filtrar los nodos: ")
                 min_size = int(input("Ingrese el tamaño mínimo del archivo: "))
                 max_size = int(input("Ingrese el tamaño máximo del archivo: "))
-                # Lógica para buscar nodos por criterios
+                nodos_filtrados = self.buscar_nodos_por_criterios(tipo, min_size, max_size)
+                print("Nodos que cumplen con los criterios:")
+                for i, nodo in enumerate(nodos_filtrados):
+                    print(f"{i + 1}. {nodo.nombre_archivo}")
+                    
+                if nodos_filtrados:
+                    opcion_filtrados = input("Seleccione un nodo para buscar más detalles (o presione Enter para omitir): ")
+                    if opcion_filtrados.isdigit():
+                        indice = int(opcion_filtrados) - 1
+                        if 0 <= indice < len(nodos_filtrados):
+                            nodo_seleccionado = nodos_filtrados[indice]
+                            self.buscar_nodo(nodo_seleccionado.tipo, nodo_seleccionado.numero)
+                        else:
+                            print("Índice fuera de rango. No se seleccionó ningún nodo.")
+                    else:
+                        print("No se seleccionó ningún nodo.")
+                        
             elif opcion == "5":
                 self.recorrido_niveles()
             elif opcion == "6":
