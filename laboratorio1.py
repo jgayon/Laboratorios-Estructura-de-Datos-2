@@ -2,6 +2,7 @@
 import os
 from collections import deque
 from typing import Any, List, Optional, Tuple
+from PIL import Image
 
 class NodoArbol:
     def __init__(self, tipo, numero):
@@ -9,6 +10,7 @@ class NodoArbol:
         self.numero = numero
         self.nombre_archivo = self.generar_nombre_archivo()
         self.size = self.obtener_tamano_archivo()
+        self.image = self.obtener_imagen()
         self.left = None
         self.right = None
 
@@ -36,6 +38,11 @@ class NodoArbol:
             return os.path.getsize(ruta_archivo)
         else:
             return None
+    
+    def obtener_imagen(self):
+        ruta_archivo = os.path.join("data", self.tipo, self.nombre_archivo)
+        image = Image.open(ruta_archivo)
+        return image
 
 class ArbolAVL:
     def __init__(self, root: NodoArbol = None):
