@@ -79,14 +79,14 @@ class ArbolAVL:
     def balancear(self, nodo: NodoArbol) -> NodoArbol:
         bal = self.obtener_altura(nodo.right) - self.obtener_altura(nodo.left)
         if bal == 2:
-            if self.obtener_altura(nodo.right.left) == -1:
+            if self.obtener_altura(nodo.right.right) - self.obtener_altura(nodo.right.left) == -1:
                 nodo.right = self.simple_derecha(nodo.right)
                 return self.simple_izquierda(nodo)
             else:
                 return self.simple_izquierda(nodo)
 
         elif bal == -2:
-            if self.obtener_altura(nodo.left.right) == 1:
+            if self.obtener_altura(nodo.left.right) - self.obtener_altura(nodo.left.left) == 1:
                 nodo.left = self.simple_izquierda(nodo.left)
                 return self.simple_derecha(nodo)
             else:
