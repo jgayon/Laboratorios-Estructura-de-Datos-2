@@ -1,4 +1,4 @@
-#import graphviz
+import graphviz 
 import os
 from collections import deque
 from typing import Any, List, Optional, Tuple
@@ -13,6 +13,7 @@ class NodoArbol:
         self.image = self.obtener_imagen()
         self.left = None
         self.right = None
+    
 
     def generar_nombre_archivo(self):
         if self.tipo == "bike":
@@ -24,7 +25,7 @@ class NodoArbol:
         elif self.tipo == "dogs":
             return f"dog.{self.numero}.jpg"
         elif self.tipo == "flowers":
-            return f"{self.numero.zfill(4)}.jpg"
+            return f"{self.numero.zfill(4)}.png"
         elif self.tipo == "horses":
             return f"horse-{self.numero}.jpg"
         elif self.tipo == "human":
@@ -47,6 +48,7 @@ class NodoArbol:
 class ArbolAVL:
     def __init__(self, root: NodoArbol = None):
         self.root = root
+    
 
     def obtener_altura(self, nodo: NodoArbol) -> int:
         if nodo is None:
@@ -119,6 +121,7 @@ class ArbolAVL:
                     pad.right = to_insert
                 print(f"Se insertó el nodo {to_insert.nombre_archivo}.")
                 self.balancear(self.root)  # Balancear después de la inserción
+                self.visualize_tree()
                 return True
             return False
 
@@ -179,6 +182,7 @@ class ArbolAVL:
                     del sus
             print(f"Se eliminó el nodo {nombre_archivo}.")    
             self.balancear(self.root)  # Balancear después de la eliminación
+            self.visualize_tree()
             return True
         print(f"No se encontró el nodo {nombre_archivo} para eliminar.")
         return False
@@ -209,13 +213,14 @@ class ArbolAVL:
             print("El nodo no fue encontrado.")
         else:
             aux = nodo.nombre_archivo
-            print("El nodo {aux} fue encontrado.")
+            print(f"El nodo {aux} fue encontrado.")
             print("Opciones:")
             print("a. Obtener el nivel del nodo.")
             print("b. Obtener el factor de balanceo (equilibrio) del nodo.")
             print("c. Encontrar el padre del nodo.")
             print("d. Encontrar el abuelo del nodo.")
             print("e. Encontrar el tío del nodo.")
+            print("f. Obtener la imagen del nodo.")  # New option added
 
             opcion = input("Seleccione una opción: ")
 
@@ -232,7 +237,7 @@ class ArbolAVL:
                     print(f"El padre del nodo {aux} es: {padre.nombre_archivo}")
             elif opcion == "d":
                 if padre is not None:
-                    abuelo, _ = self.search(padre.nombre_archivo)
+                    _, abuelo = self.search(padre.nombre_archivo)
                     if abuelo is not None:
                         print(f"El abuelo del nodo {aux} es: {abuelo.nombre_archivo}")
                     else:
@@ -250,6 +255,11 @@ class ArbolAVL:
                         print("El nodo no tiene abuelo.")
                 else:
                     print("El nodo no tiene padre.")
+            elif opcion == "f":  
+                if nodo.image is not None:
+                    nodo.image.show()  
+                else:
+                    print("No se encontró ninguna imagen para este nodo.")
             else:
                 print("Opción no válida.")
 
@@ -300,6 +310,26 @@ class ArbolAVL:
         # Print a separator to indicate the end of the current level
         print("--- Fin del nivel ---")
 
+    def visualize_tree(self):
+        def add_nodes_edges(tree, dot=None):
+            if dot is None:
+                dot = graphviz.Digraph()
+                dot.node(name=str(tree.nombre_archivo), label=f"Filename: {tree.nombre_archivo}\nType: {tree.tipo}\nSize: {tree.size}")
+
+            if tree.left:
+                dot.node(name=str(tree.left.nombre_archivo), label=f"Filename: {tree.left.nombre_archivo}\nType: {tree.left.tipo}\nSize: {tree.left.size}")
+                dot.edge(str(tree.nombre_archivo), str(tree.left.nombre_archivo))
+                dot = add_nodes_edges(tree.left, dot=dot)
+
+            if tree.right:
+                dot.node(name=str(tree.right.nombre_archivo), label=f"Filename: {tree.right.nombre_archivo}\nType: {tree.right.tipo}\nSize: {tree.right.size}")
+                dot.edge(str(tree.nombre_archivo), str(tree.right.nombre_archivo))
+                dot = add_nodes_edges(tree.right, dot=dot)
+
+            return dot
+
+        dot = add_nodes_edges(self.root)
+        dot.render('tree', format='png', cleanup=True)
 
     def menu(self):
         while True:
@@ -319,23 +349,22 @@ class ArbolAVL:
                 while tipo not in ['bike','cars','cats','dogs','flowers','horses','human']:
                     print("Tipo no válido. Los tipos permitidos son: 'bike', 'cars', 'cats', 'dogs', 'flowers', 'horses', 'human'.")
                     tipo = input("Ingrese el tipo para filtrar los nodos: ")
-                numero = input("Ingrese el número del nodo: ")
+                numero = self.Number(tipo)
                 self.insert(tipo, numero)
-             #   self.visualizar
             elif opcion == "2":
                 tipo = input("Ingrese el tipo del nodo a eliminar: ")
                 while tipo not in ['bike','cars','cats','dogs','flowers','horses','human']:
                     print("Tipo no válido. Los tipos permitidos son: 'bike', 'cars', 'cats', 'dogs', 'flowers', 'horses', 'human'.")
                     tipo = input("Ingrese el tipo para filtrar los nodos: ")
-                numero = input("Ingrese el número del nodo a eliminar: ")
+                numero = self.Number(tipo)
                 self.delete(tipo, numero)
-              #  self.visualizar
             elif opcion == "3":
                 tipo = input("Ingrese el tipo del nodo: ")
                 while tipo not in ['bike','cars','cats','dogs','flowers','horses','human']:
                     print("Tipo no válido. Los tipos permitidos son: 'bike', 'cars', 'cats', 'dogs', 'flowers', 'horses', 'human'.")
                     tipo = input("Ingrese el tipo para filtrar los nodos: ")
-                numero = input("Ingrese el número del nodo: ")
+                numero = self.Number(tipo)
+                
                 self.buscar_nodo(tipo,numero)
             elif opcion == "4":
                 tipo = input("Ingrese el tipo del nodo: ")
@@ -364,13 +393,43 @@ class ArbolAVL:
             elif opcion == "5":
                 self.recorrido_niveles()
             elif opcion == "6":
-                self.visualizar()
+                self.visualize_tree()
             elif opcion == "7":
                 print("¡Adiós!")
                 break
             else:
                 print("Opción no válida. Inténtelo de nuevo.")
 
+
+    def Number(self, tipo: str) -> str:
+        numero = int(input("Ingrese el número del nodo: "))
+        
+        if tipo == 'bike':
+            while numero <= 0 or numero > 365:
+                numero = int(input("Número fuera de rango para 'bike'. Ingrese un número entre 1 y 365: "))
+        elif tipo == 'cars':
+            while numero <= 0 or numero > 420:
+                numero = int(input("Número fuera de rango para 'cars'. Ingrese un número entre 1 y 420: "))
+        elif tipo == 'cats':
+            while numero <= 0 or numero > 202:
+                numero = int(input("Número fuera de rango para 'cats'. Ingrese un número entre 1 y 202: "))
+        elif tipo == 'dogs':
+            while numero <= 0 or numero > 202:
+                numero = int(input("Número fuera de rango para 'dogs'. Ingrese un número entre 1 y 202: "))
+        elif tipo == 'flowers':
+            while numero <= 0 or numero > 210:
+                numero = int(input("Número fuera de rango para 'flowers'. Ingrese un número entre 1 y 210: "))
+        elif tipo == 'horses':
+            while numero <= 0 or numero > 202:
+                numero = int(input("Número fuera de rango para 'horses'. Ingrese un número entre 1 y 202: "))
+        elif tipo == 'human':
+            while numero <= 0 or numero > 202:
+                numero = int(input("Número fuera de rango para 'human'. Ingrese un número entre 1 y 365: "))
+        else:
+            print("Tipo no válido.")
+            return None
+        numero_str = str(numero)
+        return numero_str
 
 def main():
     # Crear un árbol AVL
