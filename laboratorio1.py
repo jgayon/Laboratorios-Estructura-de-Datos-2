@@ -58,7 +58,7 @@ class ArbolAVL:
         return max(altura_izquierda, altura_derecha) + 1
 
     def simple_izquierda(self,nodo: NodoArbol):
-        
+
         aux = nodo.right
         nodo.right = aux.left
         aux.left = nodo
@@ -77,6 +77,12 @@ class ArbolAVL:
         return aux
     
     def balancear(self, nodo: NodoArbol) -> NodoArbol:
+        if nodo is None:
+            return None
+
+        nodo.left = self.balancear(nodo.left)
+        nodo.right = self.balancear(nodo.right)
+        
         bal = self.obtener_altura(nodo.right) - self.obtener_altura(nodo.left)
         if bal == 2:
             if self.obtener_altura(nodo.right.right) - self.obtener_altura(nodo.right.left) == -1:
@@ -106,6 +112,7 @@ class ArbolAVL:
                 p = p.right
         return p, pad
     
+    #"IVAN"
     def insert(self, tipo: str, numero: int) -> bool:
         to_insert = NodoArbol(tipo, numero)
         if self.root is None:
@@ -125,7 +132,6 @@ class ArbolAVL:
                 return True
             return False
 
-    #Delete puede tener error
     def delete(self, tipo: str, numero: int, mode: bool = True) -> bool:
         nombre_archivo = NodoArbol(tipo, numero).nombre_archivo
         p, pad = self.search(nombre_archivo)
@@ -206,7 +212,7 @@ class ArbolAVL:
         
         nivel_derecho = self.obtener_nivel(nodo.right, target, nivel_actual + 1)
         return nivel_derecho
-
+#Jose
     def buscar_nodo(self, tipo: str, numero: int) -> None:
         nodo, padre = self.search(NodoArbol(tipo, numero).nombre_archivo)
         if nodo is None:
@@ -330,7 +336,7 @@ class ArbolAVL:
 
         dot = add_nodes_edges(self.root)
         dot.render('tree', format='png', cleanup=True)
-
+#Santiago
     def menu(self):
         while True:
             print("\nMenú:")
