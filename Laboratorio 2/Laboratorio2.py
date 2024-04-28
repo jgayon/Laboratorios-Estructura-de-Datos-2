@@ -27,7 +27,7 @@ def haversine_distance(lat1, lon1, lat2, lon2):
 
   return distance
 
-df = pd.read_csv('flights_final.csv')
+df = pd.read_csv('laboratorio 2/flights_final.csv')
 
 # Creación de un diccionario para almacenar los aeropuertos y sus coordenadas
 airports = {}

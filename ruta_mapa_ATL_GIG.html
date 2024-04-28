@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_f67c1b2f14bbca5031c3ff3ea8a3d463 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_f67c1b2f14bbca5031c3ff3ea8a3d463" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_f67c1b2f14bbca5031c3ff3ea8a3d463 = L.map(
+                "map_f67c1b2f14bbca5031c3ff3ea8a3d463",
+                {
+                    center: [33.6367, -84.428101],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 5,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_c3b997f26d1a9d5d78e3c311259e54f5 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            );
+        
+    
+            tile_layer_c3b997f26d1a9d5d78e3c311259e54f5.addTo(map_f67c1b2f14bbca5031c3ff3ea8a3d463);
+        
+    
+            var marker_90f24b2fef1abdba839b708ceaef55c3 = L.marker(
+                [33.6367, -84.428101],
+                {}
+            ).addTo(map_f67c1b2f14bbca5031c3ff3ea8a3d463);
+        
+    
+        var popup_873155a02ea486f97c2a13aa25415bed = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_2acd7740aa610bc9da5aba75a4c97e6e = $(`<div id="html_2acd7740aa610bc9da5aba75a4c97e6e" style="width: 100.0%; height: 100.0%;">Hartsfield Jackson Atlanta International AirportCódigo: ATLCiudad: AtlantaPaís: United StatesLatitud: 33.6367Longitud: -84.428101</div>`)[0];
+                popup_873155a02ea486f97c2a13aa25415bed.setContent(html_2acd7740aa610bc9da5aba75a4c97e6e);
+            
+        
+
+        marker_90f24b2fef1abdba839b708ceaef55c3.bindPopup(popup_873155a02ea486f97c2a13aa25415bed)
+        ;
+
+        
+    
+    
+            var marker_112264b34be08997e31221942845e5ff = L.marker(
+                [-22.80999947, -43.25055695],
+                {}
+            ).addTo(map_f67c1b2f14bbca5031c3ff3ea8a3d463);
+        
+    
+        var popup_a4349d53282e3591fa04a612d67a6c5e = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_c659e86189b3d0e1df5a7fcd9d92c0ef = $(`<div id="html_c659e86189b3d0e1df5a7fcd9d92c0ef" style="width: 100.0%; height: 100.0%;">Rio Galeão – Tom Jobim International AirportCódigo: GIGCiudad: Rio De JaneiroPaís: BrazilLatitud: -22.80999947Longitud: -43.25055695</div>`)[0];
+                popup_a4349d53282e3591fa04a612d67a6c5e.setContent(html_c659e86189b3d0e1df5a7fcd9d92c0ef);
+            
+        
+
+        marker_112264b34be08997e31221942845e5ff.bindPopup(popup_a4349d53282e3591fa04a612d67a6c5e)
+        ;
+
+        
+    
+    
+            var poly_line_2b226243b3ae0bf8b64639e2ad75e827 = L.polyline(
+                [[33.6367, -84.428101], [-22.80999947, -43.25055695]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_f67c1b2f14bbca5031c3ff3ea8a3d463);
+        
+</script>
+</html>
