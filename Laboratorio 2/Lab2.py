@@ -75,26 +75,7 @@ for index, row in data.iterrows():
     distance = haversine(*source_coords, *dest_coords)
     G.add_edge(source_airport, destination_airport, weight=distance)
 
-orden = G.number_of_nodes()
-print(f"El orden del grafo es {orden}")
 
-
-# Crear un mapa centrado en una ubicación de referencia (por ejemplo, la latitud y longitud de un aeropuerto)
-map_center = (data["Source Airport Latitude"].mean(), data["Source Airport Longitude"].mean())
-m = folium.Map(location=map_center, zoom_start=3)
-numero_de_marcadores = 0
-
-# Agregar marcadores para los aeropuertos de origen
-for airport, pos in pos_aeropuerto.items():
-    folium.Marker(location=pos, tooltip=airport).add_to(m)
-    numero_de_marcadores += 1
-
-# Guardar el mapa como HTML
-#m.save("mapa_aeropuertos.html")
-#print("Mapa guardado como mapa_aeropuertos.html")
-# Mostrar el mapa
-#display(HTML("mapa_aeropuertos.html"))
-#print("Numero de marcadores: ",numero_de_marcadores)
 
 aeropuerto_origen_seleccionado = None
 while True:
