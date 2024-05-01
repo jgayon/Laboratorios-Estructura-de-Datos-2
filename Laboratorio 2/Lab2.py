@@ -116,6 +116,8 @@ while True:
             else:
                 try:
                     shortest_path = nx.shortest_path(G, source=source_vertex, target=dest_vertex, weight="weight")
+                    Peso = sum(G[shortest_path[i]][shortest_path[i+1]]['weight'] for i in range(len(shortest_path)-1))
+                    print(f"Peso total del camino mínimo: {Peso:.2f} km")
                 except nx.NetworkXNoPath:
                     print("No se encontró un camino entre los aeropuertos seleccionados.")
                     shortest_path = []
@@ -134,7 +136,7 @@ while True:
                     lat, lon = G.nodes[airport]['pos']
                     info_aeropuerto = obtener_informacion_aeropuerto(airport)
                     if info_aeropuerto:
-                        popup_content = f"{info_aeropuerto['Nombre']}Código: {info_aeropuerto['Código']}Ciudad: {info_aeropuerto['Ciudad']}País: {info_aeropuerto['País']}Latitud: {info_aeropuerto['Latitud']}Longitud: {info_aeropuerto['Longitud']}"
+                        popup_content = f"{info_aeropuerto['Nombre']}<br/>Código: {info_aeropuerto['Código']}<br/>Ciudad: {info_aeropuerto['Ciudad']}<br/>País: {info_aeropuerto['País']}<br/>Latitud: {info_aeropuerto['Latitud']}<br/>Longitud: {info_aeropuerto['Longitud']}"
                         folium.Marker([lat, lon], popup=popup_content).add_to(m)
                     else:
                         folium.Marker([lat, lon], popup="Aeropuerto sin información").add_to(m)
@@ -145,7 +147,8 @@ while True:
                     node2 = shortest_path[i + 1]
                     lat1, lon1 = G.nodes[node1]['pos']
                     lat2, lon2 = G.nodes[node2]['pos']
-                    folium.PolyLine([(lat1, lon1), (lat2, lon2)], color="blue").add_to(m)
+                    weight = G[node1][node2]['weight']
+                    folium.PolyLine([(lat1, lon1), (lat2, lon2)], color="blue", popup=f"Distancia: {weight:.2f} km").add_to(m)
 
                 # Guardar el mapa como HTML
                 ruta_mapa = f"ruta_mapa_{source_vertex}_{dest_vertex}.html"
@@ -163,6 +166,8 @@ while True:
             else:
                 try:
                     shortest_path = nx.shortest_path(G, source=source_vertex, target=dest_vertex, weight="weight")
+                    Peso = sum(G[shortest_path[i]][shortest_path[i+1]]['weight'] for i in range(len(shortest_path)-1))
+                    print(f"Peso total del camino mínimo: {Peso:.2f} km")
                 except nx.NetworkXNoPath:
                     print("No se encontró un camino entre los aeropuertos seleccionados.")
                     shortest_path = []
@@ -181,7 +186,7 @@ while True:
                     lat, lon = G.nodes[airport]['pos']
                     info_aeropuerto = obtener_informacion_aeropuerto(airport)
                     if info_aeropuerto:
-                        popup_content = f"{info_aeropuerto['Nombre']}Código: {info_aeropuerto['Código']}Ciudad: {info_aeropuerto['Ciudad']}País: {info_aeropuerto['País']}Latitud: {info_aeropuerto['Latitud']}Longitud: {info_aeropuerto['Longitud']}"
+                        popup_content = f"{info_aeropuerto['Nombre']}<br/>Código: {info_aeropuerto['Código']}<br/>Ciudad: {info_aeropuerto['Ciudad']}<br/>País: {info_aeropuerto['País']}<br/>Latitud: {info_aeropuerto['Latitud']}<br/>Longitud: {info_aeropuerto['Longitud']}"
                         folium.Marker([lat, lon], popup=popup_content).add_to(m)
                     else:
                         folium.Marker([lat, lon], popup="Aeropuerto sin información").add_to(m)
@@ -192,7 +197,8 @@ while True:
                     node2 = shortest_path[i + 1]
                     lat1, lon1 = G.nodes[node1]['pos']
                     lat2, lon2 = G.nodes[node2]['pos']
-                    folium.PolyLine([(lat1, lon1), (lat2, lon2)], color="blue").add_to(m)
+                    weight = G[node1][node2]['weight']
+                    folium.PolyLine([(lat1, lon1), (lat2, lon2)], color="blue", popup=f"Distancia: {weight:.2f} km").add_to(m)
 
                 # Guardar el mapa como HTML
                 ruta_mapa = f"ruta_mapa_{source_vertex}_{dest_vertex}.html"
@@ -201,6 +207,7 @@ while True:
 
                 # Mostrar el mapa
                 display(HTML(ruta_mapa))
+                
 
 
     elif opcion == "3":
