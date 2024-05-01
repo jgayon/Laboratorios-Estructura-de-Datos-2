@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_a8437ea18d857b4645fb702d0c0c4a2b {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_a8437ea18d857b4645fb702d0c0c4a2b" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_a8437ea18d857b4645fb702d0c0c4a2b = L.map(
+                "map_a8437ea18d857b4645fb702d0c0c4a2b",
+                {
+                    center: [36.822201, 7.809174],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 5,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_e6e4dc77c2d8e57f41405fbb7bbdedeb = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            );
+        
+    
+            tile_layer_e6e4dc77c2d8e57f41405fbb7bbdedeb.addTo(map_a8437ea18d857b4645fb702d0c0c4a2b);
+        
+    
+            var marker_3162e459a62ef564367385acbabb71ef = L.marker(
+                [36.822201, 7.809174],
+                {}
+            ).addTo(map_a8437ea18d857b4645fb702d0c0c4a2b);
+        
+    
+        var popup_d550aa43deb5141375ffcfb66a8cc563 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_5d5bd162fa726d3831c7376c2a15490e = $(`<div id="html_5d5bd162fa726d3831c7376c2a15490e" style="width: 100.0%; height: 100.0%;">Rabah Bitat AirportCódigo: AAECiudad: AnnabaPaís: AlgeriaLatitud: 36.822201Longitud: 7.809174</div>`)[0];
+                popup_d550aa43deb5141375ffcfb66a8cc563.setContent(html_5d5bd162fa726d3831c7376c2a15490e);
+            
+        
+
+        marker_3162e459a62ef564367385acbabb71ef.bindPopup(popup_d550aa43deb5141375ffcfb66a8cc563)
+        ;
+
+        
+    
+    
+            var marker_f83fbbc69aa11fe5fd439da81a67b85c = L.marker(
+                [41.275278, 28.751944],
+                {}
+            ).addTo(map_a8437ea18d857b4645fb702d0c0c4a2b);
+        
+    
+        var popup_17e804a13cf827ca3cc3ced67c5d058b = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_bf34ee7ca3b06ef74297b07c1e55a496 = $(`<div id="html_bf34ee7ca3b06ef74297b07c1e55a496" style="width: 100.0%; height: 100.0%;">Istanbul AirportCódigo: ISTCiudad: IstanbulPaís: TurkeyLatitud: 41.275278Longitud: 28.751944</div>`)[0];
+                popup_17e804a13cf827ca3cc3ced67c5d058b.setContent(html_bf34ee7ca3b06ef74297b07c1e55a496);
+            
+        
+
+        marker_f83fbbc69aa11fe5fd439da81a67b85c.bindPopup(popup_17e804a13cf827ca3cc3ced67c5d058b)
+        ;
+
+        
+    
+    
+            var marker_195c29ab0b9b41f74c4783b02bbab7a1 = L.marker(
+                [23.59329987, 58.28440094],
+                {}
+            ).addTo(map_a8437ea18d857b4645fb702d0c0c4a2b);
+        
+    
+        var popup_d6af795e3a993593851e444e663492e3 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_db299fef9365a9471f2ed7c56da0ac08 = $(`<div id="html_db299fef9365a9471f2ed7c56da0ac08" style="width: 100.0%; height: 100.0%;">Muscat International AirportCódigo: MCTCiudad: MuscatPaís: OmanLatitud: 23.59329987Longitud: 58.28440094</div>`)[0];
+                popup_d6af795e3a993593851e444e663492e3.setContent(html_db299fef9365a9471f2ed7c56da0ac08);
+            
+        
+
+        marker_195c29ab0b9b41f74c4783b02bbab7a1.bindPopup(popup_d6af795e3a993593851e444e663492e3)
+        ;
+
+        
+    
+    
+            var marker_8aa66929cee7502b650aa1fe25b41223 = L.marker(
+                [10.152, 76.401901],
+                {}
+            ).addTo(map_a8437ea18d857b4645fb702d0c0c4a2b);
+        
+    
+        var popup_a6a39da71b8318910ae8d4782f8f6860 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_274380dbf6f448f66e255ece82ba6c1f = $(`<div id="html_274380dbf6f448f66e255ece82ba6c1f" style="width: 100.0%; height: 100.0%;">Cochin International AirportCódigo: COKCiudad: KochiPaís: IndiaLatitud: 10.152Longitud: 76.401901</div>`)[0];
+                popup_a6a39da71b8318910ae8d4782f8f6860.setContent(html_274380dbf6f448f66e255ece82ba6c1f);
+            
+        
+
+        marker_8aa66929cee7502b650aa1fe25b41223.bindPopup(popup_a6a39da71b8318910ae8d4782f8f6860)
+        ;
+
+        
+    
+    
+            var poly_line_70ebc74cd1b80992d8b4fd6dba1a0148 = L.polyline(
+                [[36.822201, 7.809174], [41.275278, 28.751944]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_a8437ea18d857b4645fb702d0c0c4a2b);
+        
+    
+            var poly_line_b5a97965d092774722a8534520a88bd2 = L.polyline(
+                [[41.275278, 28.751944], [23.59329987, 58.28440094]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_a8437ea18d857b4645fb702d0c0c4a2b);
+        
+    
+            var poly_line_97b9ed413ecd232183e9cdf12754e264 = L.polyline(
+                [[23.59329987, 58.28440094], [10.152, 76.401901]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_a8437ea18d857b4645fb702d0c0c4a2b);
+        
+</script>
+</html>

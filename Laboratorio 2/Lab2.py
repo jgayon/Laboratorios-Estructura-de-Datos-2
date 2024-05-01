@@ -29,8 +29,12 @@ def mostrar_informacion_aeropuerto(codigo_aeropuerto):
         print("Información del aeropuerto:")
         for key, value in aeropuerto_info.items():
             print(f"{key}: {value}")
+        
+        return True
+
     else:
         print(f"No se encontró información para el aeropuerto con código {codigo_aeropuerto}")
+        return False
 
 def obtener_informacion_aeropuerto(codigo_aeropuerto):
     if codigo_aeropuerto in G.nodes:
@@ -84,20 +88,22 @@ while True:
     print("2. Mostrar el camino mínimo entre el primer y el segundo vértice sobre el mapa de la interfaz gráfica")
     print("3. Salir")
     opcion = input("Seleccione una opción: ")
-
     if opcion == '1':
         codigo_aeropuerto = input("Ingrese el código del aeropuerto: ")
         aeropuerto_origen_seleccionado = codigo_aeropuerto
-        mostrar_informacion_aeropuerto(codigo_aeropuerto)
-
-        longest_paths = nx.single_source_dijkstra_path_length(G, codigo_aeropuerto)
-        sorted_longest_paths = sorted(longest_paths.items(), key=lambda x: x[1], reverse=True)[:10]
-
-        print("\nLos 10 aeropuertos con los caminos mínimos más largos:")
-        for airport, distance in sorted_longest_paths:
-            mostrar_informacion_aeropuerto(airport)
-            print(f"Distancia del camino mínimo: {distance} km")
-            print("-------------------------------------------")
+        aux = mostrar_informacion_aeropuerto(codigo_aeropuerto)
+        
+        if not aux:
+             aeropuerto_origen_seleccionado= None
+        
+        if aux:
+            longest_paths = nx.single_source_dijkstra_path_length(G, codigo_aeropuerto)
+            sorted_longest_paths = sorted(longest_paths.items(), key=lambda x: x[1], reverse=True)[:10]
+            print("\nLos 10 aeropuertos con los caminos mínimos más largos:")
+            for airport, distance in sorted_longest_paths:
+                mostrar_informacion_aeropuerto(airport)
+                print(f"Distancia del camino mínimo: {distance} km")
+                print("-------------------------------------------")
 
 
     elif opcion == '2':
