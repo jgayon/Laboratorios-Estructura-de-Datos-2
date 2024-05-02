@@ -30,6 +30,8 @@ def mostrar_informacion_aeropuerto(codigo_aeropuerto):
         for key, value in aeropuerto_info.items():
             print(f"{key}: {value}")
         
+
+
         return True
 
     else:
@@ -50,7 +52,7 @@ def obtener_informacion_aeropuerto(codigo_aeropuerto):
     else:
         return None
 
-data = pd.read_csv("laboratorio 2/flights_final.csv")
+data = pd.read_csv("Laboratorios-Estructura-de-Datos-2/laboratorio 2/flights_final.csv")
 # Crear un grafo no dirigido y Crear diccionarios para almacenar las posiciones de origen y destino
 G = nx.Graph()
 pos_aeropuerto = {}
@@ -105,6 +107,36 @@ while True:
                 print(f"Distancia del camino mínimo: {distance} km")
                 print("-------------------------------------------")
 
+            # Crear un mapa con Folium
+            m = folium.Map(location=pos_aeropuerto[codigo_aeropuerto], zoom_start=5)
+
+            # Agregar el aeropuerto original al mapa
+            lat, lon = pos_aeropuerto[codigo_aeropuerto]
+            info_aeropuerto = obtener_informacion_aeropuerto(codigo_aeropuerto)
+            if info_aeropuerto:
+                popup_content = f"{info_aeropuerto['Nombre']}<br/>Código: {info_aeropuerto['Código']}<br/>Ciudad: {info_aeropuerto['Ciudad']}<br/>País: {info_aeropuerto['País']}<br/>Latitud: {info_aeropuerto['Latitud']}<br/>Longitud: {info_aeropuerto['Longitud']}<br/>Distancia del camino mínimo: 0.0 km"
+                folium.Marker([lat, lon], popup=popup_content, icon=folium.Icon(color='green')).add_to(m)
+            else:
+                folium.Marker([lat, lon], popup="Aeropuerto sin información", icon=folium.Icon(color='green')).add_to(m)
+
+             # Agregar los 10 aeropuertos con los caminos mínimos más largos al mapa
+            for airport, distance in sorted_longest_paths:
+                lat, lon = pos_aeropuerto[airport]
+                info_aeropuerto = obtener_informacion_aeropuerto(airport)
+                if info_aeropuerto:
+                    popup_content = f"{info_aeropuerto['Nombre']}<br/>Código: {info_aeropuerto['Código']}<br/>Ciudad: {info_aeropuerto['Ciudad']}<br/>País: {info_aeropuerto['País']}<br/>Latitud: {info_aeropuerto['Latitud']}<br/>Longitud: {info_aeropuerto['Longitud']}<br/>Distancia del camino mínimo: {distance:.2f} km"
+                    folium.Marker([lat, lon], popup=popup_content).add_to(m)
+                else:
+                    folium.Marker([lat, lon], popup="Aeropuerto sin información").add_to(m)
+
+             # Guardar el mapa como HTML
+            ruta_mapa = f"ruta_mapa_{codigo_aeropuerto}_top10.html"
+            m.save(ruta_mapa)
+            print(f"Mapa guardado como {ruta_mapa}")
+
+            # Mostrar el mapa
+            display(HTML(ruta_mapa))   
+
 
     elif opcion == '2':
         if aeropuerto_origen_seleccionado is None:
@@ -137,11 +169,12 @@ while True:
                     info_aeropuerto = obtener_informacion_aeropuerto(airport)
                     if info_aeropuerto:
                         popup_content = f"{info_aeropuerto['Nombre']}<br/>Código: {info_aeropuerto['Código']}<br/>Ciudad: {info_aeropuerto['Ciudad']}<br/>País: {info_aeropuerto['País']}<br/>Latitud: {info_aeropuerto['Latitud']}<br/>Longitud: {info_aeropuerto['Longitud']}"
-                        folium.Marker([lat, lon], popup=popup_content).add_to(m)
+                    if airport == source_vertex or airport == dest_vertex:
+                        folium.Marker([lat, lon], popup=popup_content, icon=folium.Icon(color='green')).add_to(m)
                     else:
-                        folium.Marker([lat, lon], popup="Aeropuerto sin información").add_to(m)
-
-                # Agregar las líneas que conectan los aeropuertos en el recorrido
+                        folium.Marker([lat, lon], popup=popup_content).add_to(m)
+                
+                # Agregar las aristas que conectan los aeropuertos en el recorrido
                 for i in range(len(shortest_path) - 1):
                     node1 = shortest_path[i]
                     node2 = shortest_path[i + 1]
