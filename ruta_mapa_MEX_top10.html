@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_7ad08f8f6087c2b7ac332ace93321cc0 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_7ad08f8f6087c2b7ac332ace93321cc0" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_7ad08f8f6087c2b7ac332ace93321cc0 = L.map(
+                "map_7ad08f8f6087c2b7ac332ace93321cc0",
+                {
+                    center: [19.4363, -99.072098],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 5,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_20779eb71d2acac37ab02f1e9c03872f = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            );
+        
+    
+            tile_layer_20779eb71d2acac37ab02f1e9c03872f.addTo(map_7ad08f8f6087c2b7ac332ace93321cc0);
+        
+    
+            var marker_ca5cc3ee2c6cfd18cd3ba525ea482f9f = L.marker(
+                [19.4363, -99.072098],
+                {}
+            ).addTo(map_7ad08f8f6087c2b7ac332ace93321cc0);
+        
+    
+            var icon_4db3775f009f267172e575897788ff20 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_ca5cc3ee2c6cfd18cd3ba525ea482f9f.setIcon(icon_4db3775f009f267172e575897788ff20);
+        
+    
+        var popup_5cbb9dba1ac3f899316e72efba61203c = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_b6a2e55dcddf9bdfae02a6d21ee87b67 = $(`<div id="html_b6a2e55dcddf9bdfae02a6d21ee87b67" style="width: 100.0%; height: 100.0%;">Licenciado Benito Juarez International Airport<br/>Código: MEX<br/>Ciudad: Mexico City<br/>País: Mexico<br/>Latitud: 19.4363<br/>Longitud: -99.072098<br/>Distancia del camino mínimo: 0.0 km</div>`)[0];
+                popup_5cbb9dba1ac3f899316e72efba61203c.setContent(html_b6a2e55dcddf9bdfae02a6d21ee87b67);
+            
+        
+
+        marker_ca5cc3ee2c6cfd18cd3ba525ea482f9f.bindPopup(popup_5cbb9dba1ac3f899316e72efba61203c)
+        ;
+
+        
+    
+    
+            var marker_1629322c8ab50bc6af0a5a570bd6514a = L.marker(
+                [-12.18830013, 96.83390045],
+                {}
+            ).addTo(map_7ad08f8f6087c2b7ac332ace93321cc0);
+        
+    
+        var popup_8655591c5194bdbfb0c6b273676d0245 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_6658156b13e3da192585682a26b365e2 = $(`<div id="html_6658156b13e3da192585682a26b365e2" style="width: 100.0%; height: 100.0%;">Cocos (Keeling) Islands Airport<br/>Código: CCK<br/>Ciudad: Cocos Keeling Island<br/>País: Cocos (Keeling) Islands<br/>Latitud: -12.18830013<br/>Longitud: 96.83390045<br/>Distancia del camino mínimo: 21238.13 km</div>`)[0];
+                popup_8655591c5194bdbfb0c6b273676d0245.setContent(html_6658156b13e3da192585682a26b365e2);
+            
+        
+
+        marker_1629322c8ab50bc6af0a5a570bd6514a.bindPopup(popup_8655591c5194bdbfb0c6b273676d0245)
+        ;
+
+        
+    
+    
+            var marker_d77a9dbf22031030efb6ccf476e1e7c9 = L.marker(
+                [-10.45059967, 105.6900024],
+                {}
+            ).addTo(map_7ad08f8f6087c2b7ac332ace93321cc0);
+        
+    
+        var popup_287d618fa33b31cd2f33f29c12a85838 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_e42c4e9d013d34bd247750c28b642412 = $(`<div id="html_e42c4e9d013d34bd247750c28b642412" style="width: 100.0%; height: 100.0%;">Christmas Island Airport<br/>Código: XCH<br/>Ciudad: Christmas Island<br/>País: Christmas Island<br/>Latitud: -10.45059967<br/>Longitud: 105.6900024<br/>Distancia del camino mínimo: 20253.47 km</div>`)[0];
+                popup_287d618fa33b31cd2f33f29c12a85838.setContent(html_e42c4e9d013d34bd247750c28b642412);
+            
+        
+
+        marker_d77a9dbf22031030efb6ccf476e1e7c9.bindPopup(popup_287d618fa33b31cd2f33f29c12a85838)
+        ;
+
+        
+    
+    
+            var marker_749a3efa6650890b4c3a2eece24ac7ce = L.marker(
+                [-8.520290375, 140.4179993],
+                {}
+            ).addTo(map_7ad08f8f6087c2b7ac332ace93321cc0);
+        
+    
+        var popup_3712e8bad909fe6765ed9509ddbb7179 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_ca64140bc4def4c003f02cbdd9e3a19e = $(`<div id="html_ca64140bc4def4c003f02cbdd9e3a19e" style="width: 100.0%; height: 100.0%;">Mopah Airport<br/>Código: MKQ<br/>Ciudad: Merauke<br/>País: Indonesia<br/>Latitud: -8.520290375<br/>Longitud: 140.4179993<br/>Distancia del camino mínimo: 19687.03 km</div>`)[0];
+                popup_3712e8bad909fe6765ed9509ddbb7179.setContent(html_ca64140bc4def4c003f02cbdd9e3a19e);
+            
+        
+
+        marker_749a3efa6650890b4c3a2eece24ac7ce.bindPopup(popup_3712e8bad909fe6765ed9509ddbb7179)
+        ;
+
+        
+    
+    
+            var marker_5b638762c63a87c26045b07321983a3e = L.marker(
+                [-17.58139992, 123.8280029],
+                {}
+            ).addTo(map_7ad08f8f6087c2b7ac332ace93321cc0);
+        
+    
+        var popup_79559bd444d7aa54eb7b35edaac3c25b = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_e582dd43c2a16dc55c99ff207814c6f3 = $(`<div id="html_e582dd43c2a16dc55c99ff207814c6f3" style="width: 100.0%; height: 100.0%;">RAAF Base Curtin<br/>Código: DCN<br/>Ciudad: Derby<br/>País: Australia<br/>Latitud: -17.58139992<br/>Longitud: 123.8280029<br/>Distancia del camino mínimo: 19422.43 km</div>`)[0];
+                popup_79559bd444d7aa54eb7b35edaac3c25b.setContent(html_e582dd43c2a16dc55c99ff207814c6f3);
+            
+        
+
+        marker_5b638762c63a87c26045b07321983a3e.bindPopup(popup_79559bd444d7aa54eb7b35edaac3c25b)
+        ;
+
+        
+    
+    
+            var marker_40699c51ee4ba42e41301bb2db75fc79 = L.marker(
+                [-4.9071, 140.6277],
+                {}
+            ).addTo(map_7ad08f8f6087c2b7ac332ace93321cc0);
+        
+    
+        var popup_326786e5fc7b0336e46670f24ec81177 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_36508c78681caf152e9caaff829005bc = $(`<div id="html_36508c78681caf152e9caaff829005bc" style="width: 100.0%; height: 100.0%;">Oksibil Airport<br/>Código: OKL<br/>Ciudad: Oksibil<br/>País: Indonesia<br/>Latitud: -4.9071<br/>Longitud: 140.6277<br/>Distancia del camino mínimo: 19285.47 km</div>`)[0];
+                popup_326786e5fc7b0336e46670f24ec81177.setContent(html_36508c78681caf152e9caaff829005bc);
+            
+        
+
+        marker_40699c51ee4ba42e41301bb2db75fc79.bindPopup(popup_326786e5fc7b0336e46670f24ec81177)
+        ;
+
+        
+    
+    
+            var marker_116318c30ea0a2d36e29fce62b996dc0 = L.marker(
+                [-4.10251, 138.957001],
+                {}
+            ).addTo(map_7ad08f8f6087c2b7ac332ace93321cc0);
+        
+    
+        var popup_ae807fdac88ff0fb4cfb7576da0dac49 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_c130a2e1826ddd45b0e093dabfd6922c = $(`<div id="html_c130a2e1826ddd45b0e093dabfd6922c" style="width: 100.0%; height: 100.0%;">Wamena Airport<br/>Código: WMX<br/>Ciudad: Wamena<br/>País: Indonesia<br/>Latitud: -4.10251<br/>Longitud: 138.957001<br/>Distancia del camino mínimo: 19268.40 km</div>`)[0];
+                popup_ae807fdac88ff0fb4cfb7576da0dac49.setContent(html_c130a2e1826ddd45b0e093dabfd6922c);
+            
+        
+
+        marker_116318c30ea0a2d36e29fce62b996dc0.bindPopup(popup_ae807fdac88ff0fb4cfb7576da0dac49)
+        ;
+
+        
+    
+    
+            var marker_55c3d951165f4946469a440045ba52d6 = L.marker(
+                [-2.576950073, 140.5160065],
+                {}
+            ).addTo(map_7ad08f8f6087c2b7ac332ace93321cc0);
+        
+    
+        var popup_a1f3002087a9ecd80b875eae1c43cc34 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_c46925789f3130bf8957aa3d9857f920 = $(`<div id="html_c46925789f3130bf8957aa3d9857f920" style="width: 100.0%; height: 100.0%;">Sentani International Airport<br/>Código: DJJ<br/>Ciudad: Jayapura<br/>País: Indonesia<br/>Latitud: -2.576950073<br/>Longitud: 140.5160065<br/>Distancia del camino mínimo: 19026.07 km</div>`)[0];
+                popup_a1f3002087a9ecd80b875eae1c43cc34.setContent(html_c46925789f3130bf8957aa3d9857f920);
+            
+        
+
+        marker_55c3d951165f4946469a440045ba52d6.bindPopup(popup_a1f3002087a9ecd80b875eae1c43cc34)
+        ;
+
+        
+    
+    
+            var marker_ea6cb87e16589fb8db74f120ef02fb17 = L.marker(
+                [-22.23559952, 114.0889969],
+                {}
+            ).addTo(map_7ad08f8f6087c2b7ac332ace93321cc0);
+        
+    
+        var popup_031051e455879c8e2755a9723202b2dd = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_fbf89641fa523baaf5061414fd70255a = $(`<div id="html_fbf89641fa523baaf5061414fd70255a" style="width: 100.0%; height: 100.0%;">Learmonth Airport<br/>Código: LEA<br/>Ciudad: Learmonth<br/>País: Australia<br/>Latitud: -22.23559952<br/>Longitud: 114.0889969<br/>Distancia del camino mínimo: 18735.89 km</div>`)[0];
+                popup_031051e455879c8e2755a9723202b2dd.setContent(html_fbf89641fa523baaf5061414fd70255a);
+            
+        
+
+        marker_ea6cb87e16589fb8db74f120ef02fb17.bindPopup(popup_031051e455879c8e2755a9723202b2dd)
+        ;
+
+        
+    
+    
+            var marker_1848b7e40ce51d36c0f6617114baae2c = L.marker(
+                [-23.4178009, 119.8030014],
+                {}
+            ).addTo(map_7ad08f8f6087c2b7ac332ace93321cc0);
+        
+    
+        var popup_f50318e40b724d2c3c91fe82f81c8de9 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_b36a869079619eee3033aecb2c7acdbf = $(`<div id="html_b36a869079619eee3033aecb2c7acdbf" style="width: 100.0%; height: 100.0%;">Newman Airport<br/>Código: ZNE<br/>Ciudad: Newman<br/>País: Australia<br/>Latitud: -23.4178009<br/>Longitud: 119.8030014<br/>Distancia del camino mínimo: 18660.87 km</div>`)[0];
+                popup_f50318e40b724d2c3c91fe82f81c8de9.setContent(html_b36a869079619eee3033aecb2c7acdbf);
+            
+        
+
+        marker_1848b7e40ce51d36c0f6617114baae2c.bindPopup(popup_f50318e40b724d2c3c91fe82f81c8de9)
+        ;
+
+        
+    
+    
+            var marker_00b8c641d2fb402ac21716e4ad4649b0 = L.marker(
+                [-4.528279781, 136.8869934],
+                {}
+            ).addTo(map_7ad08f8f6087c2b7ac332ace93321cc0);
+        
+    
+        var popup_bdd4dd8379e2c5a9f0d69d45dc426e84 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_57e11d21870c16cc37c74ba8ab83d3b7 = $(`<div id="html_57e11d21870c16cc37c74ba8ab83d3b7" style="width: 100.0%; height: 100.0%;">Moses Kilangin Airport<br/>Código: TIM<br/>Ciudad: Timika<br/>País: Indonesia<br/>Latitud: -4.528279781<br/>Longitud: 136.8869934<br/>Distancia del camino mínimo: 18635.67 km</div>`)[0];
+                popup_bdd4dd8379e2c5a9f0d69d45dc426e84.setContent(html_57e11d21870c16cc37c74ba8ab83d3b7);
+            
+        
+
+        marker_00b8c641d2fb402ac21716e4ad4649b0.bindPopup(popup_bdd4dd8379e2c5a9f0d69d45dc426e84)
+        ;
+
+        
+    
+</script>
+</html>
