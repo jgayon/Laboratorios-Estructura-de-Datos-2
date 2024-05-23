@@ -1,65 +1,95 @@
 import threading
+import csv
 from Crypto.Hash import SHA3_512
 
-# Información del usuario
-username, salt, pwd = ("rodeloi", "58c2ec00d53958b5057614ea6bffd9bf", "32a95dc817b65d395687ab703a0ab60c7e61907dc02745f858b0b2044558666716ff7e27c2b8da21126863d144ff52f6b26cd0b9a0715f85d201ed9d9caf3eb1")
+# Función para calcular el hash según el esquema descrito
+def calculate_hash(password, pepper, salt):
+    H = SHA3_512.new()
+    password_b = bytes(password, "utf-8")
+    H.update(password_b)
+    
+    pepper_b = pepper.to_bytes(1, "big")
+    H.update(pepper_b)
+    
+    salt_b = bytes.fromhex(salt)
+    H.update(salt_b)
+    
+    return H.hexdigest()
 
-# Lee las posibles contraseñas desde el archivo
-def read_possible_passwords(file_path):
-    with open(file_path, 'r', encoding='utf-8') as file:
+# Función para verificar contraseñas posibles
+def check_password(possible_passwords, salt, target_pwd, result, stop_event, thread_id):
+    print(f"Iniciando hilo {thread_id}...")
+    for password in possible_passwords:
+        if stop_event.is_set():
+            print(f"Hilo {thread_id} deteniéndose debido a que se encontró la contraseña en otro hilo.")
+            return
+        for pepper in range(256):
+            pwd_h = calculate_hash(password, pepper, salt)
+            if pwd_h == target_pwd:
+                result['password'] = password
+                print(f"Contraseña encontrada por el hilo {thread_id}: {password}")
+                stop_event.set()  # Indica a todos los hilos que se ha encontrado la contraseña
+                return
+    print(f"Hilo {thread_id} completado.")
+
+# Carga de contraseñas desde el archivo rockyou.txt
+def load_passwords(file_path):
+    with open(file_path, 'r', encoding='latin-1') as file:
         return [line.strip() for line in file]
 
-possible_passwords = read_possible_passwords('password_database_ED2.csv')
+# Carga de datos de la base de datos desde un archivo CSV
+def load_database(file_path):
+    database = []
+    with open(file_path, 'r', newline='') as file:
+        reader = csv.reader(file)
+        for row in reader:
+            if len(row) == 3:
+                username, salt, pwd = row
+                database.append((username, salt, pwd))
+    return database
 
-# Función para calcular el hash
-def calculate_hash(password, pepper, salt):
-    hasher = SHA3_512.new()
-    hasher.update(password)
-    hasher.update(pepper)
-    hasher.update(salt)
-    return hasher.hexdigest()
+# Función principal
+def main():
+    print("Iniciando búsqueda de contraseñas...")
+    possible_passwords = load_passwords('Laboratorios-Estructura-de-Datos-2/Laboratorio 3/rockyou.txt')
+    database = load_database('Laboratorios-Estructura-de-Datos-2/Laboratorio 3/password_database_ED2.csv')  
 
-# Convertir el salt de hexadecimal a bytes
-salt_b = bytes.fromhex(salt)
+    username = "rodeloi"  
+    target_salt, target_pwd = None, None
 
-# Variable para detener todos los hilos cuando se encuentre la contraseña
-found = threading.Event()
+    for user, salt, pwd in database:
+        if user == username:
+            target_salt, target_pwd = salt, pwd
+            print(f"Usuario {username} encontrado, su pwd: {target_pwd} y su salt es {target_salt} ")
+            break
 
-# Función de trabajo para cada hilo
-def worker(passwords):
-    for password in passwords:
-        if found.is_set():
-            return
-        password_b = bytes(password, "utf-8")
-        for pepper in range(256):
-            pepper_b = pepper.to_bytes(1, "big")
-            pwd_h = calculate_hash(password_b, pepper_b, salt_b)
-            if found.is_set():
-                return
-            if pwd == pwd_h:
-                print(f'Contraseña encontrada: {password}, Pepper: {pepper}')
-                found.set()
-                return
+    # target_salt, target_pwd= "f6cdd77c86adde155a0cd15a0be87054", "2914d209dde8c5985708cfcc46c0af818a17bdacc127840bb8d27f1aa884e9c8e0100043ecf704e84ce11c6377f2b8f1637704444d862f338122e9e8fdc4eca9"
+    
+    if target_salt is None or target_pwd is None:
+        print(f"Usuario {username} no encontrado en la base de datos")
+        return
 
-# Dividir las contraseñas entre los hilos
-def split_workload(passwords, num_threads):
-    avg = len(passwords) // num_threads
-    return [passwords[i*avg : (i+1)*avg] for i in range(num_threads)]
+    num_threads = 16
+    passwords_per_thread = len(possible_passwords) // num_threads
+    threads = []
+    result = {}
+    stop_event = threading.Event()
 
-# Número de hilos
-num_threads = 10
-password_chunks = split_workload(possible_passwords, num_threads)
+    for i in range(num_threads):
+        start = i * passwords_per_thread
+        end = (i + 1) * passwords_per_thread if i != num_threads - 1 else len(possible_passwords)
+        thread = threading.Thread(target=check_password, args=(possible_passwords[start:end], target_salt, target_pwd, result, stop_event, i))
+        threads.append(thread)
+        thread.start()
 
-# Crear y lanzar los hilos
-threads = []
-for chunk in password_chunks:
-    thread = threading.Thread(target=worker, args=(chunk,))
-    threads.append(thread)
-    thread.start()
+    for thread in threads:
+        thread.join()
 
-# Esperar a que todos los hilos terminen
-for thread in threads:
-    thread.join()
+    if 'password' in result:
+        print(f"Contraseña encontrada: {result['password']}")
+    else:
+        print("Contraseña no encontrada")
 
-if not found.is_set():
-    print('Contraseña no encontrada.')
+# Ejecución del programa principal
+if __name__== "__main__":
+    main()
